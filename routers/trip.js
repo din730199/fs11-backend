@@ -73,7 +73,7 @@ router.get('/trip', auth(), async (req, res) => {
   }
 });
 
-router.get('/all-trip', auth(), async (req, res) => {
+router.get('/all-trip', async (req, res) => {
   const result = await tripModel.find();
   res.send(result);
 });
