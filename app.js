@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const passportStratery = require('passport-facebook-token');
 const cors = require('cors');
+const port = process.env.PORT || config.get('port');
 
 const userModel = require('./models/user');
 
@@ -74,6 +75,6 @@ app.post(
   }
 );
 
-app.listen(config.get('port'), () => {
+app.listen(port, () => {
   console.log('listening...', config.get('port'));
 });
