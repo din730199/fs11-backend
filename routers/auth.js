@@ -48,17 +48,15 @@ router.post('/signUp', async (req, res) => {
 });
 
 router.post('/signIn', async (req, res) => {
-  const {username, password} = req.body;
+  const {email, password} = req.body;
   try {
     //check user
-    const foundUser = await userModel.findOne({username});
-    if (!foundUser)
-      return res.status(401).json({msg: 'Wrong username or password'});
+    const foundUser = await userModel.findOne({email});
+    if (!foundUser) return res.status(401).json({msg: 'Wrong email'});
 
     //check password
     const isMatch = await bcrypt.compare(password, foundUser.password);
-    if (!isMatch)
-      return res.status(401).json({msg: 'Wrong username or password'});
+    if (!isMatch) return res.status(401).json({msg: 'Wrong password'});
 
     //generate token
     const token = await jwt.sign(

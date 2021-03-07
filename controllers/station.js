@@ -33,4 +33,23 @@ const deleteStation = async (req, res) => {
   }
 };
 
-module.exports = {postStation, deleteStation};
+const getAllStation = async (req, res) => {
+  try {
+    const result = await stationModel.find();
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({err: 'Server error'});
+  }
+};
+
+const getStationById = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const result = await stationModel.findById(id);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({err: 'Server error'});
+  }
+};
+
+module.exports = {postStation, deleteStation, getAllStation, getStationById};
