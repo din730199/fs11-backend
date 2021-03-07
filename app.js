@@ -42,12 +42,7 @@ passport.use(
 
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use(
-  cors({
-    origin: 'http://localhost:5500',
-    optionsSuccessStatus: 200,
-  })
-);
+app.use(cors());
 
 app.get('/', async (req, res) => {
   res.send('Wellcome');
