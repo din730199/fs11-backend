@@ -27,19 +27,19 @@ router.post('/signUp', async (req, res) => {
     result = result.toObject();
     delete result.password;
 
-    sgMail
-      .send({
-        from: 'hieu@covergo.com',
-        to: result.email,
-        subject: 'Wellcome to Vexere',
-        html: "<h1 style='color:red'>Wellcome</h1>",
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // sgMail
+    //   .send({
+    //     from: 'hieu@covergo.com',
+    //     to: result.email,
+    //     subject: 'Wellcome to Vexere',
+    //     html: "<h1 style='color:red'>Wellcome</h1>",
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     res.json(result);
   } catch (error) {
     console.log(error);
