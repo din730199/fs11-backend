@@ -90,7 +90,7 @@ router.post('/signInAdmin', async (req, res) => {
     const isMatch = await bcrypt.compare(password, foundUser.password);
     if (!isMatch) return res.status(401).json({msg: 'Wrong password'});
 
-    const isAdmin = foundUser.password === 'admin';
+    const isAdmin = foundUser.role === 'admin';
     if (!isAdmin) return res.status(401).json({msg: 'Not access'});
 
     //generate token
