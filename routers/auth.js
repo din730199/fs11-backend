@@ -79,6 +79,41 @@ router.post('/signIn', async (req, res) => {
   }
 });
 
+router.post('/signInAdmin', async (req, res) => {
+  const {email, password} = req.body;
+  try {
+    //check user
+    const foundUser = await userModel.findOne({email});
+    if (!foundUser) return res.status(401).json({msg: 'Wrong email'});
+
+    //check password
+    const isMatch = await bcrypt.compare(password, foundUser.password);
+    if (!isMatch) return res.status(401).json({msg: 'Wrong password'});
+
+    const isAdmin = foundUser.password === 'admin';
+    if (!isAdmin) return res.status(401).json({msg: 'Not access'});
+
+    //generate token
+    const token = await jwt.sign(
+      {
+        _id: foundUser._id,
+      },
+      'vexerejwt'
+    );
+
+    //save token vao user
+    foundUser.token.push(token);
+    await foundUser.save();
+
+    // result = foundUser.toObject();
+    // delete result.password;
+    res.json(token);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({err: 'Server error'});
+  }
+});
+
 router.get('/me', auth(), async (req, res) => {
   const result = req.user.toJson();
   res.send(result);
