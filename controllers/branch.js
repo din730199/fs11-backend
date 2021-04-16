@@ -12,8 +12,8 @@ const postBranch = async (req, res) => {
       address: req.body.address,
       code: req.body.code,
     });
-
     const data = await newBranch.save();
+
     res.send(data);
   } catch (error) {
     res.status(500).send({err: 'Server error'});

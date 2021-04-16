@@ -5,8 +5,9 @@ const {Seat} = require('../models/seat');
 const tripModel = require('../models/trip');
 const auth = require('../utils/auth');
 const {postBookTrip} = require('../controllers/trip');
+const ticketModel = require('../models/ticket');
 
-router.post('/trip', auth(['admin']), async (req, res) => {
+router.post('/trip', async (req, res) => {
   try {
     let {
       departurePlace,
@@ -56,7 +57,7 @@ router.post('/trip', auth(['admin']), async (req, res) => {
   }
 });
 
-router.get('/trip', auth(), async (req, res) => {
+router.get('/trip', async (req, res) => {
   let {departure, arrival, date} = req.query;
   date = date + ' 00:00:00';
   try {
@@ -74,8 +75,50 @@ router.get('/trip', auth(), async (req, res) => {
 });
 
 router.get('/all-trip', async (req, res) => {
-  const result = await tripModel.find();
+  const result = await tripModel.find().populate('departurePlace arrivalPlace');
   res.send(result);
+});
+
+router.get('/all-ticket', async (req, res) => {
+  const result = await ticketModel.find().populate('user trip');
+  res.send(result);
+});
+
+router.get('/byId-ticket', auth(), async (req, res) => {
+  const result = await ticketModel
+    .find({user: req.user._id})
+    .populate('user trip');
+  res.send(result);
+});
+
+router.delete('/trip/:id', async (req, res) => {
+  try {
+    const data = await tripModel.findByIdAndDelete(req.params.id);
+    if (data) {
+      res.json({
+        msg: 'Delete thành công',
+        status: 200,
+      });
+    } else {
+      res.json({
+        errors: [
+          {
+            msg: 'Delete thất bại',
+          },
+        ],
+        status: 201,
+      });
+    }
+  } catch (error) {
+    res.json({
+      errors: [
+        {
+          msg: 'Server errors',
+        },
+      ],
+      status: 205,
+    });
+  }
 });
 
 router.post('/trip/booking', auth(), postBookTrip);

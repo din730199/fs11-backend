@@ -33,6 +33,38 @@ const deleteStation = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    const data = await stationModel.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (data) {
+      res.json({
+        msg: 'Update thành công',
+        status: 200,
+      });
+    } else {
+      res.json({
+        errors: [
+          {
+            msg: 'Update thất bại',
+          },
+        ],
+        status: 201,
+      });
+    }
+  } catch (error) {
+    res.json({
+      errors: [
+        {
+          msg: 'Server errors',
+        },
+      ],
+      status: 205,
+    });
+  }
+};
+
 const getAllStation = async (req, res) => {
   try {
     const result = await stationModel.find();
@@ -52,4 +84,10 @@ const getStationById = async (req, res) => {
   }
 };
 
-module.exports = {postStation, deleteStation, getAllStation, getStationById};
+module.exports = {
+  postStation,
+  deleteStation,
+  getAllStation,
+  getStationById,
+  update,
+};
