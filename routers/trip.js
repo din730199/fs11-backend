@@ -59,6 +59,7 @@ router.post('/trip', async (req, res) => {
 
 router.get('/trip', async (req, res) => {
   let {departure, arrival, date} = req.query;
+  date = date + ' 00:00:00';
   try {
     const foundTrips = await tripModel
       .find({
