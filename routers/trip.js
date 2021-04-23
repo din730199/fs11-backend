@@ -61,6 +61,7 @@ router.get('/trip', async (req, res) => {
   let {departure, arrival, date} = req.query;
   date = date + ' 00:00:00';
   try {
+    console.log(date);
     const foundTrips = await tripModel
       .find({
         departurePlace: departure,
