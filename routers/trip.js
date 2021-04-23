@@ -76,6 +76,13 @@ router.get('/trip', async (req, res) => {
   }
 });
 
+router.get('/trip/:id', async (req, res) => {
+  const result = await tripModel
+    .findById(req.params.id)
+    .populate('departurePlace arrivalPlace', '_id name province address');
+  res.send(result);
+});
+
 router.get('/all-trip', async (req, res) => {
   const result = await tripModel.find().populate('departurePlace arrivalPlace');
   res.send(result);
