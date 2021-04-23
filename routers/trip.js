@@ -68,6 +68,7 @@ router.get('/trip', async (req, res) => {
         startedDate: date,
       })
       .populate('departurePlace arrivalPlace', '_id name province address');
+    console.log(foundTrips);
     res.send(foundTrips);
   } catch (err) {
     res.status(500).send({err: 'Server error'});
