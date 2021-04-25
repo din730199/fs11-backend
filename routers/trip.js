@@ -98,9 +98,9 @@ router.get('/byId-ticket', auth(), async (req, res) => {
     path: 'trip user',
     populate: {
       path: 'departurePlace arrivalPlace',
-      select: '-_id -__v',
+      select: '-_id -__v ',
     },
-    select: '-_id -__v',
+    select: '-_id -__v -seat',
   });
   res.send(result);
 });
