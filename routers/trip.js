@@ -94,14 +94,17 @@ router.get('/all-ticket', async (req, res) => {
 });
 
 router.get('/byId-ticket', auth(), async (req, res) => {
-  const result = await ticketModel.find({user: req.user._id}).populate({
-    path: 'trip user',
-    populate: {
-      path: 'departurePlace arrivalPlace',
-      select: '-_id -__v ',
-    },
-    select: '-_id -__v -seat',
-  });
+  const result = await ticketModel
+    .find({user: req.user._id})
+    .populate({
+      path: 'trip',
+      populate: {
+        path: 'departurePlace arrivalPlace',
+        select: '-_id -__v ',
+      },
+      select: '-_id -__v -seat',
+    })
+    .populate('user', '-_id -__v -token -password');
   res.send(result);
 });
 
